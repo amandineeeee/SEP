@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEP&Moi - {% block title %}Page{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script> <!-- Pour les icônes FontAwesome -->
+</head>
+<body>
+    <!-- Bannière -->
+    <header class="banner">
+        <img src="{{ url_for('static', filename='../static/images/Caducee.png') }}" alt="Logo SEP&Moi" class="logo">
+        <h1 class="title">SEP&Moi</h1>
+    </header>
+
+    <!-- Menu déroulant -->
+    <div class="menu">
+        <div class="dropdown">
+            <button class="dropbtn">
+                <i class="fas fa-cogs"></i> 
+            </button>
+            <div class="dropdown-content">
+                <a href="/patients">Rechercher un patient</a>
+                <a href="/nouveau_patient">Créer une fiche patient</a>
+                <a href="/aidePriseDecision">Outil d'aide à la prise de décision</a>
+                <a href="/jumeauNumerique">Jumeau numérique</a>
+                <a href="/logout">Déconnexion</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contenu de la page -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

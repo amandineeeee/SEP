@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Recherche des Patients{% endblock %}
+
+{% block content %}
+
+    <div class="container" id="nouveauPatient">
+        <h2>Fiche du nouveau patient</h2>
+        <!-- Formulaire de la fiche patient -->
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Informations générales -->
+            <div class="cadre">
+                <h3><u>Informations générales</u></h3>
+                <label>Nom et prénom :</label>
+                <input type="text" id="nom" name="nom" placeholder="Nom" required>
+                <input type="text" id="prenom" name="prenom" placeholder="Prenom" required>
+                
+                <label>Date de naissance :</label>
+                <input type="date" name="date_naissance" required>
+                
+                <label>Sexe :</label>
+                <select name="sexe" required>
+                    <option value="homme">Homme</option>
+                    <option value="femme">Femme</option>
+                </select>
+
+                <label>Mode de vie :</label>
+                <textarea name="mode_de_vie" rows="3"></textarea>
+            </div>
+            
+            <!-- Antécédents médicaux -->
+            <div class="cadre">
+                <h3><u>Antécédents médicaux</u></h3>
+                <label>Date du diagnostic SEP :</label>
+                <input type="date" name="date_diagnostic">
+                
+                <label>Forme de SEP :</label>
+                <select name="forme_sep">
+                    <option value="rr">Rémittente-Récurrente</option>
+                    <option value="sp">Secondaire Progressive</option>
+                    <option value="pp">Primaire Progressive</option>
+                </select>
+            </div>
+            
+            <!-- Traitements -->
+            <div class="cadre">
+                <h3><u>Traitements et médications</u></h3>
+                <h4><b>• Traitements antérieurs</b></h4>
+                <label>Nom du traitement :</label>
+                <input type="text" name="nom_traitement[]" placeholder="Nom du traitement">
+
+                <label>Dosage/ fréquence :</label>
+                <input type="text" name="frequence_traitement[]" placeholder="Dosage / fréquence">
+
+                <label>Informations complémentaires :</label>
+                <textarea name="informations_traitement[]" placeholder="Informations complémentaires"></textarea>
+                <button type="button" id="add-traitement" class="btn-plus">Ajouter un traitement</button>
+                <div id="traitements-list"></div>
+                
+                
+                <h4><b>• Traitements actuels</b></h4>
+                <label>Nom du traitement :</label>
+                <input type="text" name="nom_traitement_actuel[]" placeholder="Nom du traitement">
+
+                <label>Dosage/ fréquence :</label>
+                <input type="text" name="frequence_traitement_actuel[]" placeholder="Dosage / fréquence">
+
+                <label>Informations complémentaires :</label>
+                <textarea name="informations_traitement_actuel[]" placeholder="Informations complémentaires"></textarea>
+                <button type="button" id="add-traitement-actuel" class="btn-plus">Ajouter un traitement</button>
+                <div id="traitements-actuels-list"></div>
+            </div>
+
+            <!-- Informations neurologiques -->
+            <div class="cadre">
+                <h3><u>État neurologique</u></h3>
+                <label>Score EDSS :</label>
+                <input type="number" step="1" min="0" max="10" name="score_edss">
+                
+                <label>Symptômes :</label>
+                <textarea name="symptomes" rows="3"></textarea>
+            </div>
+
+            <!-- Examens -->
+            <div class="cadre">
+                <h3><u>Examens complémentaires</u></h3>
+                <label>Type d'examen :</label>
+                <input type="text" name="type_examen[]" placeholder="Type d'examen" required>
+
+                <label>Date de l'examen :</label>
+                <input type="date" name="date_examen[]" required>
+
+                <label>Résultat de l'examen :</label>
+                <textarea name="resultat_examen[]" placeholder="Résultat de l'examen" required></textarea>
+                <label>Fichiers (PDF, JPG, JPEG, PNG) :</label>
+                <input type="file" name="document_scanne_0[]" multiple accept=".pdf,.jpg,.jpeg,.png">
+                <button type="button" id="add-examen" class="btn-plus">Ajouter un examen</button>
+                <div id="examens-list"></div>
+            </div>
+
+            <!-- Consultations -->
+            <div class="cadre">
+                <h3><u>Suivi & observations</u></h3>
+                <label>Consultation :</label>
+                <input type="date" name="derniere_consultation[]">
+                
+                <label>Plan de soins :</label>
+                <textarea name="plan_soins[]" rows="3"></textarea>
+                <button type="button" id="add-consultation" class="btn-plus">Ajouter une consultation</button>
+                <div id="consultations-list"></div>
+            </div>
+
+            <button id="enregistrer" type="submit">Enregistrer</button>
+        </form>
+    </div>
+
+    <!-- Lien JS -->
+    <script src="{{ url_for('static', filename='js/ajouterExamen.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+    flatpickr("#date_naissance", {
+        dateFormat: "d/m/Y", 
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Modifier la fiche d'un patient{% endblock %}
+
+{% block content %}
+    <div class="container" id="nouveauPatient">
+        <h2>Modifier la fiche du patient</h2>
+        <!-- Formulaire de la fiche patient -->
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('patient.modifier_patient', id=patient[0]) }}">
+            <!-- Informations générales -->
+            <div class="cadre">
+                <h3><u>Informations générales</u></h3>
+                <label>Nom et prénom :</label>
+                <input type="text" name="nom" value="{{ patient[1] }}" required>
+                <input type="text" name="prenom" value="{{ patient[2] }}" required>
+                
+                <label>Date de naissance :</label>
+                <input type="date" name="date_naissance" value="{{ patient[13] }}" required>
+                
+                <label>Sexe :</label>
+                <select name="sexe" required>
+                    <option value="H" {% if patient[4] == 'H' %}selected{% endif %}>Homme</option>
+                    <option value="F" {% if patient[4] == 'F' %}selected{% endif %}>Femme</option>
+                </select>
+
+                <label>Mode de vie :</label>
+                <textarea name="mode_de_vie">{{ patient[5] }}</textarea>
+            </div>
+            
+            <!-- Antécédents médicaux -->
+            <div class="cadre">
+                <h3><u>Antécédents médicaux</u></h3>
+                <label>Date du diagnostic SEP :</label>
+                <input type="date" name="date_diagnostic" value="{{ patient[7] }}">
+                
+                <label>Forme de SEP :</label>
+                <select name="forme_sep">
+                    <option value="rémittente-récurrente" {% if patient[8] == 'rémittente-récurrente' %}selected{% endif %}>Rémittente-Récurrente</option>
+                    <option value="secondaire progressive" {% if patient[8] == 'secondaire progressive' %}selected{% endif %}>Secondaire Progressive</option>
+                    <option value="primaire progressive" {% if patient[8] == 'primaire progressive' %}selected{% endif %}>Primaire Progressive</option>
+                </select>
+            </div>
+
+            <!-- Traitements -->
+            <div class="cadre">
+                <h3><u>Traitements</u></h3>
+                
+                <!-- Traitements actuels -->
+                <h4><b>• Traitements actuels</b></h4>
+                {% if traitements_actuels %}
+                    {% for traitement in traitements_actuels %}
+                        <div class="traitement">
+                            <label>Nom du traitement :</label>
+                            <input type="text" name="nom_traitement_actuel[]" value="{{ traitement[1] }}" required>
+
+                            <label>Dosage / fréquence :</label>
+                            <input type="text" name="frequence_traitement_actuel[]" value="{{ traitement[2] }}" required>
+
+                            <label>Informations complémentaires :</label>
+                            <textarea name="informations_traitement_actuel[]">{{ traitement[3] }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucun traitement actuel.</p>
+                {% endif %}
+                
+                <button type="button" id="add-traitement" class="btn-plus">Ajouter un traitement</button>
+                <div id="traitements-list"></div>
+                
+                <!-- Traitements antérieurs -->
+                <h4><b>• Traitements antérieurs</b></h4>
+                {% if traitements_anterieurs %}
+                    {% for traitement in traitements_anterieurs %}
+                        <div class="traitement">
+                            <label>Nom du traitement :</label>
+                            <input type="text" name="nom_traitement_ancien[]" value="{{ traitement[1] }}" required>
+
+                            <label>Dosage / fréquence :</label>
+                            <input type="text" name="frequence_traitement_ancien[]" value="{{ traitement[2] }}" required>
+
+                            <label>Informations complémentaires :</label>
+                            <textarea name="informations_traitement_ancien[]">{{ traitement[3] }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucun traitement antérieur.</p>
+                {% endif %}
+                
+                <button type="button" id="add-traitement-actuel" class="btn-plus">Ajouter un traitement</button>
+                <div id="traitements-actuels-list"></div>
+            </div>
+
+            <!-- Informations neurologiques -->
+            <div class="cadre">
+                <h3><u>État neurologique</u></h3>
+                <label>Score EDSS :</label>
+                <input type="number" step="1" min="0" max="10" name="score_edss" value="{{ patient[9] }}">
+                
+                <label>Symptômes :</label>
+                <textarea name="symptomes">{{ patient[10] }}</textarea>
+            </div>
+
+            <!-- Examens -->
+            <div class="cadre">
+                <h3><u>Examens complémentaires</u></h3>
+                {% if analyses%}
+                    {% for analyse in analyses %}
+                        <div class="examen">
+                            <label>Type d'examen :</label>
+                            <input type="text" name="type_examen[]" value="{{ analyse[2] }}" required>
+
+                            <label>Date de l'examen :</label>
+                            <input type="date" name="date_examen[]" value="{{ analyse[3] }}" required>
+
+                            <label>Résultat de l'examen :</label>
+                            <textarea name="resultat_examen[]" required>{{ analyse[4] }}</textarea>
+
+                            <label>Fichiers (PDF, JPG, JPEG, PNG) :</label>
+                            <input type="file" name="document_scanne_0[]" multiple accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucun examen complémentaire.</p>
+                {% endif %}
+                <button type="button" id="add-examen" class="btn-plus">Ajouter un examen</button>
+                <div id="examens-list"></div>
+            </div>
+
+            <!-- Consultations -->
+            <div class="cadre">
+                <h3><u>Suivi & observations</u></h3>
+                {% if consultations %}
+                    {% for consultation in consultations %}
+                        <div class="consultation">
+                            <label>Date de la consultation :</label>
+                            <input type="date" name="derniere_consultation[]" value="{{ consultation[2] }}" required>
+
+                            <label>Plan de soins :</label>
+                            <textarea name="plan_soins[]" rows="3">{{ consultation[3] }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucune consultation disponible.</p>
+                {% endif %}
+                <button type="button" id="add-consultation" class="btn-plus">Ajouter une consultation</button>
+                <div id="consultations-list"></div>
+            </div>
+
+            <button id="enregistrer" type="submit">Enregistrer les modifications</button>
+        </form>
+    </div>
+
+    <!-- Lien JS -->
+    <script src="{{ url_for('static', filename='js/ajouterExamen.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+    flatpickr("#date_naissance", {
+        dateFormat: "d/m/Y", 
+    });
+    </script>
+{% endblock %}

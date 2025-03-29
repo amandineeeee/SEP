@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Recherche des Patients{% endblock %}
+
+{% block content %}
+    <!-- Messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h2>Saisir un nouveau patient</h2>
+
+        <!-- Bouton pour créer la fiche patient -->
+        <input class="creerPatient" type="button" value="Créer la fiche" onclick="window.location.href='/nouveau_patient';" />
+        
+        <h2>Recherche des patients</h2>
+
+        <!-- Filtres de recherche -->
+        <div class="filters">
+            <label for="nom">Nom :</label>
+            <input class="labelName" type="text" id="nom" name="nom" placeholder="Entrez un nom" oninput="fetchPatients()">
+            <label for="prenom">Prénom :</label>
+            <input class="labelName" type="text" id="prenom" name="prenom" placeholder="Entrez un prénom" oninput="fetchPatients()">
+            <label for="age">Âge :</label>
+            <input class="labelName" type="number" id="age" name="age" placeholder="Entrez un âge" oninput="fetchPatients()">
+        </div>
+
+        <!-- Tableau des patients -->
+        <table id="patients_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Date de naissance</th>
+                    <th>Âge</th>
+                    <th>Sexe</th>
+                    <th>Mode de vie</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if patients %}
+                    {% for patient in patients %}
+                    <tr>
+                        <td>{{ patient.id_patient }}</td>
+                        <td>{{ patient.nom }}</td>
+                        <td>{{ patient.prenom }}</td>
+                        <td>{{ patient.date_de_naissance if patient.date_de_naissance is not none else ''}}</td>
+                        <td>{{ patient.age }}</td>
+                        <td>{{ patient.sexe }}</td>
+                        <td>{{ patient.mode_vie if patient.mode_vie is not none else '' }}</td>
+                        <td>
+                            <!-- Icône pour consulter la fiche du patient -->
+                            <a href="/view_patient/{{ patient.id_patient }}" title="Consulter">
+                                <i class="fas fa-eye" style="color: #697ab4;"></i>
+                            </a>
+                            <!-- Icône pour éditer la fiche du patient -->
+                            <a href="/edit_patient/{{ patient.id_patient }}" title="Modifier">
+                                <i class="fas fa-edit" style="color: #7ead93;"></i>
+                            </a>
+                            <!-- Icône pour supprimer le patient et ses informations -->
+                            <a href="/delete_patient/{{ patient.id_patient }}" title="Supprimer" onclick="return confirm('Voulez-vous vraiment supprimer ce patient ?');">
+                                <i class="fas fa-trash-alt" style="color: #ca3838;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun patient trouvé.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Lien JS -->
+    <script src="{{ url_for('static', filename='js/chercherPatients.js') }}"></script>
+{% endblock %}

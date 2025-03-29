@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Consulter la fiche d'un patient{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h2>Fiche de {% if patient[4] == 'H' %}M. {% else %}Mme. {% endif %}{{ patient[1] }} {{ patient[2] }}</h2>
+        <div id="detail_container">
+            <!-- Informations principales du patient -->
+            <div class="patient_details">
+                <h3><u>Informations personnelles</u></h3>
+                <p><strong>ID :</strong> {{ patient[0] }}</p>
+                <p><strong>Nom :</strong> {{ patient[1] }}</p>
+                <p><strong>Prénom :</strong> {{ patient[2] }}</p>
+                <p><strong>Date de naissance :</strong> {{ patient[13] if patient[13] else 'Non renseigné'}}</p>
+                <p><strong>Âge :</strong> {{ patient[3] }}</p>
+                <p><strong>Sexe :</strong> {{ 'Homme' if patient[4] == 'H' else 'Femme' }}</p>
+                <p><strong>Mode de vie :</strong> {{ patient[5] if patient[5] else 'Non renseigné' }}</p>
+                <p><strong>Date de diagnostic :</strong> {{ patient[7] if patient[7] else 'Non renseigné' }}</p>
+                <p><strong>Forme SEP :</strong> 
+                    {% if patient[8] %}
+                        {% if patient[8] == 'rémittente-récurrente' %}
+                            Rémittente-récurrente
+                        {% elif patient[8] == 'secondaire progressive' %}
+                            Secondaire progressive
+                        {% else %}
+                            Primaire progressive
+                        {% endif %}
+                    {% else %}
+                        Non renseigné
+                    {% endif %}
+                </p>
+                <p><strong>Score EDSS :</strong> {{ patient[9] if patient[9] else 'Non renseigné' }}</p>
+                <p><strong>Symptômes :</strong> {{ patient[10] if patient[10] else 'Non renseigné' }}</p>
+            </div>
+
+            <div class="medication_detail">
+                <!-- Traitements antérieurs -->
+                <h3><u>Traitements antérieurs</u></h3>
+                {% if traitements_anterieurs %}
+                    <ul>
+                        {% for traitement in traitements_anterieurs %}
+                            <li><strong>Nom :</strong> {{ traitement[1] }} | <strong>Fréquence :</strong> {{ traitement[2] }} | <strong>Informations :</strong> {{ traitement[3] if traitement[3] else 'Non renseigné' }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucun traitement antérieur.</p>
+                {% endif %}
+
+                <!-- Traitements actuels -->
+                <h3><u>Traitements actuels</u></h3>
+                {% if traitements_actuels %}
+                    <ul>
+                        {% for traitement in traitements_actuels %}
+                            <li><strong>Nom :</strong> {{ traitement[1] }} | <strong>Fréquence :</strong> {{ traitement[2] }} | <strong>Informations :</strong> {{ traitement[3] if traitement[3] else 'Non renseigné'}}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucun traitement actuel.</p>
+                {% endif %}
+
+                <!-- Analyses -->
+                <h3><u>Analyses médicales</u></h3>
+                {% if analyses %}
+                    <ul>
+                        {% for analyse in analyses %}
+                            <li>
+                                <strong>Type :</strong> {{ analyse[1] }} | <strong>Date :</strong> {{ analyse[2] }} | <strong>Résultats :</strong> {{ analyse[3] }}
+                                {% if analyse[4] %}
+                                    <!-- Affichage de l'image associée à l'analyse -->
+                                     <br>
+                                    <strong>Image associée :</strong>
+                                    <br>
+                                    <img src="data:image/png;base64,{{ analyse[4] }}" alt="Image de l'analyse" width="300">
+                                {% else %}
+                                    <p>Aucune image disponible pour cette analyse.</p>
+                                {% endif %}
+                            </li>
+                            <br>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucune analyse disponible.</p>
+                {% endif %}
+
+                <!-- Consultations -->
+                <h3><u>Consultations</u></h3>
+                {% if consultations %}
+                    <ul>
+                        {% for consultation in consultations %}
+                            <li><strong>Date :</strong> {{ consultation[2] }} | <strong>Plan de soins :</strong> {{ consultation[3] if consultation[3] else 'Non renseigné'}}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucune consultation disponible.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
