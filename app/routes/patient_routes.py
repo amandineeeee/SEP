@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from werkzeug.utils import secure_filename
 import os 
 import base64
+import cv2
 # Import des fonctions codées dans d'autres fichiers
 from app.db import get_db_connection
 from app.utils import calculer_age, allowed_file
@@ -468,3 +469,9 @@ def prediction():
         else:
             flash("Fichier refusé ! Mauvais format. Seuls les formats .jpg, .jpeg ou .png sont autorisés", "danger")
     return render_template('outil_aide_prise_decision.html')
+
+# Route pour rediriger vers la page d'introduction au jumeau numérique
+@patient_bp.route('/jumeauNumerique')
+def consulter_graphes():
+    # Redirection
+    return render_template('graphes.html')

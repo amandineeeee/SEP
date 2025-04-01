@@ -83,10 +83,8 @@ plt.xlabel("Temps (ms)")
 plt.ylabel("Potentiel de membrane")
 plt.legend()
 plt.title("Impact de la démyélinisation sur la transmission du signal")
+plt.savefig("app/static/images/courbes.png", dpi=300)
 plt.show()
-
-# %%
-plt.savefig("app/data/jumeauNum/courbes.png", dpi=300)
 
 # %%
 echantillons = [neurone_sain.nbSpikes, neurone_endommage.nbSpikes, neurone_severe.nbSpikes]
@@ -101,11 +99,6 @@ plt.barh(labels, echantillons, color=['#7ead93', '#f8d7da', '#721c24'] , edgecol
 plt.xlabel('Nombre de spikes')
 plt.ylabel('Type de neurone')
 plt.title('Histogramme des spikes par type de neurone')
-
-# Afficher le graphique
+plt.tight_layout() 
+plt.savefig("app/static/images/histogramme.png")
 plt.show()
-
-# %%
-plt.savefig("app/data/jumeauNum/histogramme.png", dpi=300)
-
-
