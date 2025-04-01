@@ -39,6 +39,8 @@ CREATE DATABASE dossier_medical;
 mysql -u root -p dossier_medical < dossier_medical.sql
 ```
 
+Une fois cela fait, vous devez changer vos informations de connexion dans le fichier db.py.
+
 ## Création et activation de l'environnement de travail 
 
 - Créer l'environnement
