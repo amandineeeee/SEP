@@ -15,7 +15,7 @@
 
     <!-- Formulaire de connexion -->
     <div id="containerConnexion">
-        <form id="formulaire" action="/login" method="POST">
+        <form id="formulaire" action="/enregistrer_compte" method="POST">
             <div class="form-group">
                 <label for="username">Nom d'utilisateur :</label>
                 <input type="text" id="username" name="username" required>
@@ -24,8 +24,28 @@
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">Se connecter</button>
-            <p><a href="/creerCompte">Créer un compte</a></p>
+            <div class="form-group">
+                <label for="statut">Statut :</label>
+                <select id="statut" name="statut" class="form-control">
+                    <option value="medecin">Médecin</option>
+                    <option value="administrateur">Administrateur</option>
+                </select>
+            </div>            
+            <button type="submit">Créer mon compte</button>
+            
+            <!-- Messages flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                        {{ message }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
         </form>
     </div>
 </body>

@@ -1,7 +1,7 @@
 # ----- Import des librairies -----
 
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 # Import de la fonction contenue dans le fichie db.py 
 # Cette fonction permet de se connecter à la BDD
 from app.db import get_db_connection
@@ -62,3 +62,39 @@ def logout():
     session.pop('role', None)  
     # Redirige l'utilisateur vers la page de connexion
     return redirect(url_for('auth.login'))  
+
+@auth_bp.route('/creerCompte')
+def createAccount():
+    return render_template('creer_compte.html')
+
+@auth_bp.route('/enregistrer_compte',  methods=['POST'])
+def registerAccount():
+    # Vérifier que la requête soit de type POST
+    if request.method == 'POST':
+        # Récupérer les données envoyées par le formulaire
+        username = request.form['username']
+        password = request.form['password']
+        statut = request.form['statut']
+        # Hacher le mot de passe
+        hashed_password = generate_password_hash(password)
+
+        # Connexion à la BDD
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+         # Vérifier si le username existe déjà
+        cursor.execute("SELECT * FROM Utilisateur WHERE username = %s", (username,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            flash("Ce nom d'utilisateur est déjà pris. Veuillez en choisir un autre.", "danger")
+            return redirect(url_for('auth.createAccount'))
+        
+        cursor.execute("""
+            INSERT INTO Utilisateur (username, password, role)
+            VALUES (%s, %s, %s)
+        """, (username, hashed_password, statut))
+        conn.commit()
+        conn.close()
+
+    return render_template('index.html')
