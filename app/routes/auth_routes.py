@@ -2,6 +2,11 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import check_password_hash, generate_password_hash
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import random
+import string
 # Import de la fonction contenue dans le fichie db.py 
 # Cette fonction permet de se connecter à la BDD
 from app.db import get_db_connection
@@ -72,6 +77,7 @@ def registerAccount():
     # Vérifier que la requête soit de type POST
     if request.method == 'POST':
         # Récupérer les données envoyées par le formulaire
+        email = request.form['email']
         username = request.form['username']
         password = request.form['password']
         statut = request.form['statut']
@@ -91,9 +97,9 @@ def registerAccount():
             return redirect(url_for('auth.createAccount'))
         
         cursor.execute("""
-            INSERT INTO Utilisateur (username, password, role)
-            VALUES (%s, %s, %s)
-        """, (username, hashed_password, statut))
+            INSERT INTO Utilisateur (username, email, password, role)
+            VALUES (%s, %s, %s, %s)
+        """, (username, email, hashed_password, statut))
         conn.commit()
         conn.close()
 

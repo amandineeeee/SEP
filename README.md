@@ -27,6 +27,13 @@ Avant de commencer, assurez-vous d'avoir installé :
 mysql -u root -p
 ```
 
+<u>Attention:</u>
+Si vous rencontrez l'erreur "ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock'", cela signifie que le client MySQL utilise un mauvais chemin de socket et vous devez exécuter la conmmande suivante: 
+
+```
+mysql -u root -p --socket=/var/run/mysqld/mysqld.sock
+```
+
 - Créer une base de données 
 
 ```

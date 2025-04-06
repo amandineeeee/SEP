@@ -41,15 +41,9 @@ function fetchPatients() {
                             <td>${patient.sexe}</td>
                             <td>${mode_de_vie}</td>
                             <td>
-                                <a href="/view_patient/${ patient.id_patient }" title="Consulter">
-                                    <i class="fas fa-eye" style="color: #697ab4;"></i>
-                                </a>
-                                <a href="/edit_patient/${patient.id_patient}" title="Modifier">
-                                    <i class="fas fa-edit" style="color: #7ead93;"></i>
-                                </a>
-                                <a href="/delete_patient/${patient.id_patient}" title="Supprimer" onclick="return confirm('Voulez-vous vraiment supprimer ce patient ?');">
-                                    <i class="fas fa-trash-alt" style="color: #ca3838;"></i>
-                                </a>
+                                <a href="/view_patient/${ patient.id_patient }" title="Consulter"><i class="fas fa-eye" style="color: #697ab4;"></i></a>&nbsp;
+                                <a href="/edit_patient/${patient.id_patient}" title="Modifier"><i class="fas fa-edit" style="color: #7ead93;"></i></a>&nbsp;
+                                <a href="/delete_patient/${patient.id_patient}" title="Supprimer" onclick="return confirm('Voulez-vous vraiment supprimer ce patient ?');"><i class="fas fa-trash-alt" style="color: #ca3838;"></i></a>
                             </td>
                         </tr>`;
                     tableBody.innerHTML += row;
