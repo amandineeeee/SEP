@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # %%
-class NeuroneIntegrateAndFire:
+class Neurone:
     def __init__(self, seuil=1.0, tau=20.0, R=1.0, dt=0.1):
         self.seuil = seuil  # Seuil de déclenchement du potentiel d'action
         self.tau = tau  # Constante de temps
@@ -11,15 +11,7 @@ class NeuroneIntegrateAndFire:
         self.dt = dt  # Pas de temps
         self.potentiel_membranaire = 0.0
 
-    def mettre_a_jour(self, courant_entrant):
-        dV = (courant_entrant * self.R - self.potentiel_membranaire) * (self.dt / self.tau)
-        self.potentiel_membranaire += dV
-        if self.potentiel_membranaire >= self.seuil:
-            self.potentiel_membranaire = 0.0
-            return True
-        return False
-
-class NeuroneSEP(NeuroneIntegrateAndFire):
+class NeuroneSEP(Neurone):
     def __init__(self, seuil=1.0, tau_normal=20.0, tau_demyelin=50.0, tau_severe=100.0, R=1.0, dt=0.1):
         super().__init__(seuil, tau_normal, R, dt)
         self.tau_demyelin = tau_demyelin  # Constante de temps pour les zones démyélinisées
