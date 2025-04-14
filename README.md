@@ -43,17 +43,13 @@ pour extraire des caractéristiques ;
 - Une couche de sortie utilisant la fonction d’activation sigmoïde pour réaliser une classification binaire (SEP ou non).
 
 J’ai utilisé l’optimiseur Adam et l’accuracy comme métrique d’évaluation.
-Pour éviter le surapprentissage, j’ai ajouté un callback EarlyStopping qui arrête l’entraînement
-si l’accuracy de validation n’augmente plus après 10 epochs.
-J’ai également utilisé ReduceLROnPlateau, qui diminue automatiquement le taux d’apprentis-
-sage lorsque la perte de validation cesse de s’améliorer, permettant ainsi une convergence plus
-stable.
+Pour éviter le surapprentissage, j’ai ajouté un callback EarlyStopping qui arrête l’entraînement si l’accuracy de validation n’augmente plus après 10 epochs.
+J’ai également utilisé ReduceLROnPlateau, qui diminue automatiquement le taux d’apprentissage lorsque la perte de validation cesse de s’améliorer, permettant ainsi une convergence plus stable.
 Pour ce qui est des hyperparamètres, j’ai fixé un maximum d’epochs à 20 et un batch size de 3.
 Ce choix a été contraint par la quantité limitée de données en ma possession.
-J’obtiens une perte à 2.09 et une accuracy à 75%. Ces résultats montrent que le modèle fonctionne
-à un niveau acceptable, mais en ce qui concerne la perte, un nette amélioration est possible. Cela s’explique par le fait que le modèle n’a pas suffisamment de données pour apprendre correc-
-tement. En effet, le manque de données peut limiter la capacité du modèle à généraliser et à
-capturer la variabilité des images.
+
+J’obtiens une perte de 2.09 et une accuracy de 75 %. Bien que l'accuracy semble correcte, le modèle n'est en réalité pas satisfaisant. Ce dernier a tendance à surapprendre  sur les données d'entraînement, en raison du faible volume de données disponibles. Ce manque de diversité dans le jeu de données limite fortement sa capacité à généraliser et à capturer la variabilité des images IRM. Par conséquent, les performances réelles du modèle sur de nouvelles données seraient sans doute nettement inférieures.
+
 J’ai aussi tenté d’intégrer des techniques d’augmentation de données afin d’augmenter artificiellement la taille du jeu de données et de diversifier les exemples d’entraînement. Cependant lorsque j’ai voulu l’intégrer à mon application Flask, cela a posé problème.
 Afin de rendre mon modèle fiable, il me faudrait beaucoup plus de données.
 Si cela était possible, j’aimerais tester divers modèles tels que Random Forest ou encore de
