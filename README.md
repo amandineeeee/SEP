@@ -33,7 +33,7 @@ L’interface utilisateur est gérée via Flask, les données sont stockées dan
 profond afin d’éviter le surapprentissage.
 Le modèle que j’ai implémenté a la structure suivante :
 - Une couche d’entrée ;
-- Une couche de convolution comprenant 32 filtres de taille 3 × 3, utilisant la fonction
+- Une couche de convolution comprenant 32 filtres de taille 3x3, utilisant la fonction
 d’activation ReLU, qui permet de détecter les motifs dans l’image ;
 - Une couche de pooling MaxPooling 2×2 pour réduire la taille des cartes de caractéristiques
 et éviter le surapprentissage ;
